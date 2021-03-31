@@ -8,7 +8,7 @@ import pandas as pd
 # OKEx的历史数据只提供2000个bar
 from QAUitl.QALogs import QA_util_log_info
 
-OKEx_MIN_DATE = datetime.datetime(2017, 10, 1, tzinfo=tzutc())
+OKEx_MIN_DATE = datetime.datetime(2020, 1, 1, tzinfo=tzutc())
 OKEx_EXCHANGE = 'OKEX'
 OKEx_SYMBOL = 'OKEX.{}'
 
