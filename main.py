@@ -1,4 +1,4 @@
-from okex_spot_fetch import Start
+from save_okex import QA_SU_save_okex
 
 if __name__ == '__main__':
-    Start()
+    QA_SU_save_okex()
