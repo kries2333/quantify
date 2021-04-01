@@ -11,7 +11,7 @@ from requests.exceptions import ConnectTimeout, SSLError, ReadTimeout, Connectio
 # from retrying import retry
 from urllib.parse import urljoin
 
-from QAUitl.QADate_Adv import QA_util_datetime_to_Unix_timestamp
+from QAUtil.QADate_Adv import QA_util_datetime_to_Unix_timestamp
 
 """
 OKEx 只允许一次获取 200bar，时间请求超过范围则只返回最新200条

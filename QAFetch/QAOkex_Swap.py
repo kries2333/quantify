@@ -11,7 +11,7 @@ from requests.exceptions import ConnectTimeout, SSLError, ReadTimeout, Connectio
 # from retrying import retry
 from urllib.parse import urljoin
 
-from QAUitl.QADate_Adv import QA_util_datetime_to_Unix_timestamp
+from QAUtil.QADate_Adv import QA_util_datetime_to_Unix_timestamp
 
 """
 OKEx 只允许一次获取 200bar，时间请求超过范围则只返回最新200条
@@ -27,6 +27,7 @@ column_names = [
     'low',
     'close',
     'volume',
+    'currency_volume',
 ]
 
 """
@@ -142,7 +143,7 @@ def QA_fetch_okex_swap_kline_min(
         if (len(klines) == 0):
             return None
 
-# https://www.okex.com/api/swap/v3/instruments/BTC-USDT/history/candles?granularity=60&start=2020-03-29T08:13:00.000Z&end=2020-03-29T03:14:00.000Z
+# https://www.okex.com/api/swap/v3/instruments/EOS-USD-SWAP/history/candles?start=2020-07-28T02:31:00.000Z&end=2020-07-27T02:55:00.000Z&granularity=60
 def QA_fetch_okex_swap_kline_with_auto_retry(
     symbol,
     start_time,
