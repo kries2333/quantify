@@ -10,7 +10,6 @@ from QAUtil.QASetting import DATABASE
 
 
 def QA_util_find_missing_kline(
-    trade_type,
     symbol,
     freq,
     start_epoch=datetime(2017,
@@ -33,10 +32,7 @@ def QA_util_find_missing_kline(
     }
 
     if (freq != FREQUENCE.DAY):
-        if trade_type == 'swap':
-            col = DATABASE.cryptocurrency_swap_min
-        else:
-            col = DATABASE.cryptocurrency_spot_min
+        col = DATABASE.cryptocurrency_min
         col.create_index(
             [
                 ("symbol",

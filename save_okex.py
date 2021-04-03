@@ -17,7 +17,7 @@ from QAUtil.QADate_Adv import (
     QA_util_datetime_to_Unix_timestamp,
     QA_util_print_timestamp
 )
-from QAFetch.QAOkEx_Spot import (
+from QAFetch.QAOkEx import (
     # QA_fetch_okex_symbols,
     # QA_fetch_okex_kline,
     QA_fetch_okex_kline_min,
@@ -36,7 +36,7 @@ from QAUtil.QAcrypto import (
 
 import pymongo
 
-OKEx_MIN_DATE = datetime.datetime(2020, 1, 1, tzinfo=tzutc())
+OKEx_MIN_DATE = datetime.datetime(2019, 1, 1, tzinfo=tzutc())
 OKEx_EXCHANGE = 'OKEX'
 OKEx_SYMBOL = 'OKEX.{}'
 
@@ -48,7 +48,7 @@ def QA_SU_save_okex_min(
     Save OKEx min kline 分钟线数据，统一转化字段保存数据为 crypto_asset_min
     """
     symbol_template = OKEx_SYMBOL
-    col = DATABASE.cryptocurrency_spot_min
+    col = DATABASE.cryptocurrency_min
     col.create_index(
         [
             ("symbol",
@@ -85,7 +85,7 @@ def QA_SU_save_okex_min(
                 ]
             )
 
-    symbol_list['symbol'] = ['BTC-USDT']
+    symbol_list['symbol'] = ['BTC-USDT', 'ETH-USDT', 'EOS-USDT']
 
     end = datetime.datetime.now(tzutc())
     QA_util_log_info(
@@ -246,7 +246,7 @@ def QA_SU_save_data_okex_callback(data, freq):
         )
     )
     if (freq not in ['1day', '86400', 'day', '1d']):
-        col = DATABASE.cryptocurrency_spot_min
+        col = DATABASE.cryptocurrency_min
         col.create_index(
             [
                 ("symbol",

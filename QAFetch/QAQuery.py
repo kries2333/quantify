@@ -76,7 +76,7 @@ def QA_fetch_cryptocurrency_min(
     end,
     format='pd',
     frequence='1min',
-    collections=DATABASE.cryptocurrency_spot_min
+    collections=DATABASE.cryptocurrency_min
 ):
     '''
      '获取数字资产分钟线'
