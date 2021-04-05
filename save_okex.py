@@ -36,7 +36,7 @@ from QAUtil.QAcrypto import (
 
 import pymongo
 
-OKEx_MIN_DATE = datetime.datetime(2019, 1, 1, tzinfo=tzutc())
+OKEx_MIN_DATE = datetime.datetime(2017, 10, 1, tzinfo=tzutc())
 OKEx_EXCHANGE = 'OKEX'
 OKEx_SYMBOL = 'OKEX.{}'
 
@@ -128,7 +128,6 @@ def QA_SU_save_okex_min(
 
             # 查询到 Kline 缺漏，点抓取模式，按缺失的时间段精确请求K线数据
             missing_data_list = QA_util_find_missing_kline(
-                'spot',
                 symbol_template.format(symbol_info['symbol']),
                 OKEx2QA_FREQUENCY_DICT[frequency],
             )[::-1]

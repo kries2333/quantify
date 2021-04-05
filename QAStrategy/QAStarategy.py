@@ -1,23 +1,49 @@
+import _thread
+import datetime
+import time
+import multiprocessing as mp
+
 import pandas as pd
 
 from QAFetch.QAQuery import QA_fetch_cryptocurrency_min
 from QAStrategy.Evaluate import equity_curve_for_OKEx_USDT_future_next_open
 from QAStrategy.Position import position_for_OKEx_future
-from QAStrategy.Signals import signal_simple_bolling
+from QAStrategy.Signals import signal_simple_bolling, signal_simple_bolling_para_list
+
+
+def train_on_parameter(df, param, result_dict, result_lock):
+    signal_df = signal_simple_bolling(df, param)
+    position_df = position_for_OKEx_future(signal_df)
+    _df = equity_curve_for_OKEx_USDT_future_next_open(position_df)
+    r = _df.iloc[-1]['equity_curve']
+    result_dict[str(param)] = r
+    return
+
+def log(start_t, text):
+    end_t = datetime.datetime.now()
+    elapsed_sec = (end_t - start_t).total_seconds()
+    print("{} 多线程计算共消耗: {:.2f}".format(text, elapsed_sec) + " 秒")
 
 if __name__ == "__main__":
+
+    start_t = datetime.datetime.now()
+
+    num_cores = int(mp.cpu_count())
+    print("本地计算机有: " + str(num_cores) + " 核心")
+    pool = mp.Pool(num_cores)
+
     data = QA_fetch_cryptocurrency_min(
         code=[
-            # 'OKEX.BTC-USDT',
-            'OKEX.ETH-USDT',
+            'OKEX.BTC-USDT',
+            # 'OKEX.ETH-USDT',
             # 'OKEX.EOS-USDT'
         ],
-        start='2019-01-01',
-        end='2021-03-31',
+        start='2017-10-01',
+        end='2019-04-03',
         frequence='1min'
     )
 
-    period_df = data.resample("60T", on='datetime', label='left', closed='left').agg(
+    period_df = data.resample("15T", on='datetime', label='left', closed='left').agg(
         {'open': 'first',
          'high': 'max',
          'low': 'min',
@@ -29,10 +55,34 @@ if __name__ == "__main__":
     period_df = period_df[period_df['volume'] > 0]  # 去除成交量为0的交易周期
     period_df.reset_index(inplace=True)
     df = period_df[['datetime', 'open', 'high', 'low', 'close', 'volume']]
-    df = df[df['datetime'] >= pd.to_datetime('2020-01-01')]
+    df = df[df['datetime'] >= pd.to_datetime('2017-10-01')]
     df.reset_index(inplace=True, drop=True)
 
-    signal_df = signal_simple_bolling(df)
-    position_df = position_for_OKEx_future(signal_df)
-    res = equity_curve_for_OKEx_USDT_future_next_open(position_df)
-    print(res)
+    log(start_t, '数据库获取数据')
+
+    manager = mp.Manager()
+    managed_locker = manager.Lock()
+    managed_dict = manager.dict()
+
+    params = signal_simple_bolling_para_list()
+
+    _df = df.copy()
+    results = [pool.apply_async(train_on_parameter, args=(_df, param, managed_dict, managed_locker)) for param in params]
+    results = [p.get() for p in results]
+
+    log(start_t, '计算参数')
+
+    _dict= sorted(managed_dict.items(), key=lambda d:d[1])
+    out = pd.DataFrame(columns={
+        'param',
+        'equity_curve'
+    })
+
+    log(start_t, '参考值排序')
+
+    for index in range(len(_dict)):
+        out.loc[index] = [_dict[index][0], _dict[index][1]]
+
+    out.to_csv('OKEX.ETH-USDT_15T_boll.csv')
+
+    log(start_t, '完成')
