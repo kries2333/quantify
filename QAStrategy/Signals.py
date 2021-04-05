@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def signal_simple_bolling(df, params=[700, 3]):
+def signal_simple_bolling(df, params=[400, 2]):
     """
     :param df:
     :param para: n, m
@@ -67,6 +67,7 @@ def signal_simple_bolling_para_list(m_list=range(10, 1000, 10), n_list=[i / 10 f
     :param n_list:
     :return:
     """
+
     para_list = []
 
     for m in m_list:

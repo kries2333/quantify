@@ -18,8 +18,8 @@ class QA_Setting():
         self.lock = Lock()
 
         self.mongo_uri = uri or self.get_mongo()
-        self.username = None
-        self.password = None
+        self.username = 'root'
+        self.password = '123456'
 
         # 加入配置文件地址
 
