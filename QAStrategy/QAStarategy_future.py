@@ -9,10 +9,10 @@ from QAStrategy.QAOrder import *
 print(ccxt.__version__)  # 检查ccxt版本，需要最新版本，1.44.21以上
 
 # ===参数设定
-coin = 'btc'.upper()  # 要套利的币种
+coin = 'ltc'.upper()  # 要套利的币种
 future_date = '210625'  # 要套利的合约到期时间
 coin_precision = 1  # 去行情页面上，看下这个币种合约的价格是小数点后几位。如果小数点后有3位，那么coin_precision就是3
-execute_amount = 1000  # 每次建仓usdt的数量。如果是btc的话，得是100的整数倍。其他币种得是10的整数倍。每次数量不要太多，太多会造成价格波动。建议数量在1000-3000之间。
+execute_amount = 20  # 每次建仓usdt的数量。如果是btc的话，得是100的整数倍。其他币种得是10的整数倍。每次数量不要太多，太多会造成价格波动。建议数量在1000-3000之间。
 max_execute_num = 5  # 最大建仓次数。建仓这些次数之后程序就会停止。
 r_threshold = 0.0575  # 高于利差就开始入金，0.05代表5%
 spot_fee_rate = 1 / 1000  # 根据自己的手续费进行修改。如果是bnb支付，可以修改为0。
@@ -22,6 +22,7 @@ contact_size = {
     'ETH': 10,
     'EOS': 10,  # 一张合约代表10美金
     'DOT': 10,
+    'LTC': 10,
 }  # 你套利的币种一定要在这个dict里面
 
 # ===创建交易所

@@ -17,8 +17,6 @@ class FREQUENCE():
     ASKBID = 'askbid'  # 上下五档/一档
     REALTIME_MIN = 'realtime_min' # 实时分钟线
     LATEST = 'latest'  # 当前bar/latest
-
-    2019/08/06 @yutiansut
     """
 
     YEAR = 'year'  # 年bar

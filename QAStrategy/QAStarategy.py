@@ -24,8 +24,7 @@ def log(start_t, text):
     elapsed_sec = (end_t - start_t).total_seconds()
     print("{} 多线程计算共消耗: {:.2f}".format(text, elapsed_sec) + " 秒")
 
-if __name__ == "__main__":
-
+def start_strategy_booling(symbol, t):
     start_t = datetime.datetime.now()
 
     num_cores = int(mp.cpu_count())
@@ -34,16 +33,14 @@ if __name__ == "__main__":
 
     data = QA_fetch_cryptocurrency_min(
         code=[
-            'OKEX.BTC-USDT',
-            # 'OKEX.ETH-USDT',
-            # 'OKEX.EOS-USDT'
+            symbol
         ],
         start='2017-10-01',
-        end='2019-04-03',
+        end='2020-04-03',
         frequence='1min'
     )
 
-    period_df = data.resample("15T", on='datetime', label='left', closed='left').agg(
+    period_df = data.resample(t, on='datetime', label='left', closed='left').agg(
         {'open': 'first',
          'high': 'max',
          'low': 'min',
@@ -83,6 +80,11 @@ if __name__ == "__main__":
     for index in range(len(_dict)):
         out.loc[index] = [_dict[index][0], _dict[index][1]]
 
-    out.to_csv('OKEX.ETH-USDT_15T_boll.csv')
+    out_file = symbol + "_" + t + "_boll" + ".csv"
+    out.to_csv(out_file)
 
     log(start_t, '完成')
+
+if __name__ == "__main__":
+    start_strategy_booling("OKEX.BTC-USDT", '15T')
+

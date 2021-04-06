@@ -18,8 +18,6 @@ from QAUtil.QADate_Adv import (
     QA_util_print_timestamp
 )
 from QAFetch.QAOkEx import (
-    # QA_fetch_okex_symbols,
-    # QA_fetch_okex_kline,
     QA_fetch_okex_kline_min,
     OKEx2QA_FREQUENCY_DICT
 )
