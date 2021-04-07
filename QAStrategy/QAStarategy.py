@@ -19,12 +19,14 @@ def train_on_parameter(df, param, result_dict, result_lock):
     result_dict[str(param)] = r
     return
 
+
 def log(start_t, text):
     end_t = datetime.datetime.now()
     elapsed_sec = (end_t - start_t).total_seconds()
     print("{} 多线程计算共消耗: {:.2f}".format(text, elapsed_sec) + " 秒")
 
-def start_strategy_booling(symbol, t):
+
+def start_strategy_booling(symbol, t, teb):
     start_t = datetime.datetime.now()
 
     num_cores = int(mp.cpu_count())
@@ -69,7 +71,7 @@ def start_strategy_booling(symbol, t):
 
     log(start_t, '计算参数')
 
-    _dict= sorted(managed_dict.items(), key=lambda d:d[1])
+    _dict = sorted(managed_dict.items(), key=lambda d: d[1])
     out = pd.DataFrame(columns={
         'param',
         'equity_curve'
@@ -80,11 +82,15 @@ def start_strategy_booling(symbol, t):
     for index in range(len(_dict)):
         out.loc[index] = [_dict[index][0], _dict[index][1]]
 
-    out_file = symbol + "_" + t + "_boll" + ".csv"
+    out_file = teb + "_" + symbol + "_" + t + "_bolling_"  + ".csv"
     out.to_csv(out_file)
 
     log(start_t, '完成')
 
-if __name__ == "__main__":
-    start_strategy_booling("OKEX.BTC-USDT", '15T')
 
+if __name__ == "__main__":
+    # for symbol in ['OKEX.BTC-USDT', 'OKEX.ETH-USDT', 'OKEX.EOS-USDT']:
+    #     for t in ['15T', '30T', '60T']:
+    #         start_strategy_booling(symbol, t, 'mod')
+
+    start_strategy_booling('OKEX.ETH-USDT', '60T', 'mod')

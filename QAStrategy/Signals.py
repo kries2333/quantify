@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def signal_simple_bolling(df, params=[400, 2]):
+def signal_simple_bolling(df, params=[400, 2, 0.04]):
     """
     :param df:
     :param para: n, m
@@ -18,6 +18,7 @@ def signal_simple_bolling(df, params=[400, 2]):
     # ===策略参数
     n = int(params[0])
     m = params[1]
+    x = params[2]   # 限定价格离中gui的距离
 
     # ===计算指标
     # 计算均线
@@ -31,7 +32,8 @@ def signal_simple_bolling(df, params=[400, 2]):
     # 找出做多信号
     condition1 = df['close'] > df['upper']  # 当前K线的收盘价 > 上轨
     condition2 = df['close'].shift(1) <= df['upper'].shift(1)  # 之前K线的收盘价 <= 上轨
-    df.loc[condition1 & condition2, 'signal_long'] = 1  # 将产生做多信号的那根K线的signal设置为1，1代表做多
+    condition3 = (df['open'] - df['median']) / df['median'] < x
+    df.loc[condition1 & condition2 & condition3, 'signal_long'] = 1  # 将产生做多信号的那根K线的signal设置为1，1代表做多
 
     # 找出做多平仓信号
     condition1 = df['close'] < df['median']  # 当前K线的收盘价 < 中轨
@@ -41,7 +43,8 @@ def signal_simple_bolling(df, params=[400, 2]):
     # 找出做空信号
     condition1 = df['close'] < df['lower']  # 当前K线的收盘价 < 下轨
     condition2 = df['close'].shift(1) >= df['lower'].shift(1)  # 之前K线的收盘价 >= 下轨
-    df.loc[condition1 & condition2, 'signal_short'] = -1  # 将产生做空信号的那根K线的signal设置为-1，-1代表做空
+    condition3 = (df['median'] - df['open']) / df['median'] < x
+    df.loc[condition1 & condition2 & condition3, 'signal_short'] = -1  # 将产生做空信号的那根K线的signal设置为-1，-1代表做空
 
     # 找出做空平仓信号
     condition1 = df['close'] > df['median']  # 当前K线的收盘价 > 中轨
@@ -60,7 +63,7 @@ def signal_simple_bolling(df, params=[400, 2]):
     return df
 
 # 策略参数组合
-def signal_simple_bolling_para_list(m_list=range(10, 1000, 10), n_list=[i / 10 for i in list(np.arange(5, 50, 1))]):
+def signal_simple_bolling_para_list(m_list=range(10, 1000, 10), n_list=[i / 10 for i in list(np.arange(5, 50, 1))], x_list=[i / 100 for i in list(np.arange(1, 10, 1))]):
     """
     产生布林 策略的参数范围
     :param m_list:
@@ -72,7 +75,8 @@ def signal_simple_bolling_para_list(m_list=range(10, 1000, 10), n_list=[i / 10 f
 
     for m in m_list:
         for n in n_list:
-            para = [m, n]
-            para_list.append(para)
+            for x in x_list:
+                para = [m, n, x]
+                para_list.append(para)
 
     return para_list
