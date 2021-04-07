@@ -89,8 +89,6 @@ def start_strategy_booling(symbol, t, teb):
 
 
 if __name__ == "__main__":
-    # for symbol in ['OKEX.BTC-USDT', 'OKEX.ETH-USDT', 'OKEX.EOS-USDT']:
-    #     for t in ['15T', '30T', '60T']:
-    #         start_strategy_booling(symbol, t, 'mod')
-
-    start_strategy_booling('OKEX.ETH-USDT', '60T', 'mod')
+    for symbol in ['OKEX.BTC-USDT', 'OKEX.ETH-USDT', 'OKEX.EOS-USDT']:
+        for t in ['15T', '30T', '60T']:
+            start_strategy_booling(symbol, t, 'mod')

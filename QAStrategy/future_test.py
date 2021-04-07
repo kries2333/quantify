@@ -3,8 +3,8 @@ import time
 import datetime
 import ccxt
 
-time_interval = 2  # 数据抓取间隔时间
-diff_target = 0.08  # 目标开仓期现价差 0.08代表8%价差
+time_interval = 10  # 数据抓取间隔时间
+diff_target = 0.09  # 目标开仓期现价差 0.08代表8%价差
 exchange = ccxt.binance()
 symbols = exchange.dapiPublicGetExchangeInfo()['symbols']  # 币本位所有交易对
 
