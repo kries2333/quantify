@@ -10,14 +10,14 @@
 
 # =====配置交易相关参数=====
 # 更新需要交易的合约、策略参数、下单量等配置信息
-from datetime import datetime, timedelta
-from QAPositions import *
 
 # =交易所配置
-from QAConfig import exchange_timeout
+import ccxt
+import pandas as pd
 
 # =执行的时间间隔
-from QAFuntions import *
+from QARealTrade.QAConfig import exchange_timeout
+from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data
 
 time_interval = '60m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
 
@@ -48,7 +48,7 @@ max_len = 1000  # 设定最多收集多少根K线，okex不能超过1440根
 symbol_candle_data = dict()  # 用于存储K线数据
 
 # 账号持仓
-def AccountPositions():
+def account_positions():
     # =获取持仓数据
     # 初始化symbol_info，在每次循环开始时都初始化
     symbol_info_columns = ['账户权益', '持仓方向', '持仓量', '持仓收益率', '持仓收益', '持仓均价', '当前价格', '最大杠杆']
@@ -90,6 +90,6 @@ def real_klink_min(symbol_info):
     print('\nsymbol_info:\n', symbol_info)
     print('本周期交易计划:', symbol_signal)
 
-if __name__ == '__main__':
-    symbol_info = AccountPositions()
+def real_trade_start():
+    symbol_info = account_positions()
     real_klink_min(symbol_info)

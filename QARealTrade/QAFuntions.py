@@ -13,8 +13,6 @@ from QAStrategy import Signals
 
 # =====okex交互函数
 # ===通过ccxt、交易所接口获取合约账户信息
-from QAConfig import *
-
 
 def ccxt_fetch_future_account(exchange, max_try_amount=5):
     """
