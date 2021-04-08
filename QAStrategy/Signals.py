@@ -72,7 +72,7 @@ def signal_simple_bolling(df, params=[400, 2, 0.5]):
     # ===策略参数
     n = int(params[0])
     m = params[1]
-    x = params[2]   # 限定价格离中gui的距离
+    x = params[2]   # 限定价格离中规的距离
 
     # ===计算指标
     # 计算均线
