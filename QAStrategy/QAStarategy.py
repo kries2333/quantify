@@ -1,10 +1,8 @@
-import _thread
 import datetime
-import time
 import multiprocessing as mp
-
 import pandas as pd
 
+from Common.Common import log
 from QAFetch.QAQuery import QA_fetch_cryptocurrency_min
 from QAStrategy.Evaluate import equity_curve_for_OKEx_USDT_future_next_open
 from QAStrategy.Position import position_for_OKEx_future
@@ -20,12 +18,6 @@ def train_on_parameter(df, param, result_dict, result_lock):
     return
 
 
-def log(start_t, text):
-    end_t = datetime.datetime.now()
-    elapsed_sec = (end_t - start_t).total_seconds()
-    print("{} 多线程计算共消耗: {:.2f}".format(text, elapsed_sec) + " 秒")
-
-
 def start_strategy_booling_params(symbol, t, teb):
     start_t = datetime.datetime.now()
 
@@ -38,7 +30,7 @@ def start_strategy_booling_params(symbol, t, teb):
             symbol
         ],
         start='2017-10-01',
-        end='2020-04-03',
+        end='2021-04-07',
         frequence='1min'
     )
 
@@ -86,7 +78,6 @@ def start_strategy_booling_params(symbol, t, teb):
     out.to_csv(out_file)
 
     log(start_t, '完成')
-
 
 if __name__ == "__main__":
     # for symbol in ['OKEX.BTC-USDT', 'OKEX.ETH-USDT', 'OKEX.EOS-USDT']:

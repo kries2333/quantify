@@ -1,9 +1,12 @@
+import datetime
 import pandas as pd
 import numpy as np
 import itertools
 
 # ======= 策略评价 =========
 # 将资金曲线数据，转化为交易数据
+from Common.Common import log
+from QAFetch.QAQuery import QA_fetch_cryptocurrency_min
 from QAStrategy.Evaluate import equity_curve_for_OKEx_USDT_future_next_open
 from QAStrategy.Position import position_for_OKEx_future
 from QAStrategy.Signals import signal_simple_bolling
@@ -22,7 +25,7 @@ def transfer_equity_curve_to_trade(equity_curve):
 
     # =计算每笔交易的start_time
     if 'start_time' not in equity_curve.columns:
-        equity_curve.loc[open_pos_condition, 'start_time'] = equity_curve['candle_begin_time']
+        equity_curve.loc[open_pos_condition, 'start_time'] = equity_curve['date_time']
         equity_curve['start_time'].fillna(method='ffill', inplace=True)
         equity_curve.loc[equity_curve['pos'] == 0, 'start_time'] = pd.NaT
 
@@ -41,7 +44,7 @@ def transfer_equity_curve_to_trade(equity_curve):
 
         g = group[group['pos'] != 0]  # 去除pos=0的行
         # 本次交易结束那根K线的开始时间
-        trade.loc[_index, 'end_bar'] = g.iloc[-1]['candle_begin_time']
+        trade.loc[_index, 'end_bar'] = g.iloc[-1]['datetime']
         # 开仓价格
         trade.loc[_index, 'start_price'] = g.iloc[0]['open']
         # 平仓信号的价格
@@ -74,7 +77,7 @@ def strategy_evaluate(equity_curve, trade):
 
     # ===计算年化收益
     annual_return = (equity_curve['equity_curve'].iloc[-1] / equity_curve['equity_curve'].iloc[0]) ** (
-        '1 days 00:00:00' / (equity_curve['candle_begin_time'].iloc[-1] - equity_curve['candle_begin_time'].iloc[0]) * 365) - 1
+        '1 days 00:00:00' / (equity_curve['datetime'].iloc[-1] - equity_curve['datetime'].iloc[0]) * 365) - 1
     results.loc[0, '年化收益'] = str(round(annual_return, 2)) + ' 倍'
 
     # ===计算最大回撤，最大回撤的含义：《如何通过3行代码计算最大回撤》https://mp.weixin.qq.com/s/Dwt4lkKR_PEnWRprLlvPVw
@@ -83,9 +86,9 @@ def strategy_evaluate(equity_curve, trade):
     # 计算到历史最高值到当日的跌幅，drowdwon
     equity_curve['dd2here'] = equity_curve['equity_curve'] / equity_curve['max2here'] - 1
     # 计算最大回撤，以及最大回撤结束时间
-    end_date, max_draw_down = tuple(equity_curve.sort_values(by=['dd2here']).iloc[0][['candle_begin_time', 'dd2here']])
+    end_date, max_draw_down = tuple(equity_curve.sort_values(by=['dd2here']).iloc[0][['datetime', 'dd2here']])
     # 计算最大回撤开始时间
-    start_date = equity_curve[equity_curve['candle_begin_time'] <= end_date].sort_values(by='equity_curve', ascending=False).iloc[0]['candle_begin_time']
+    start_date = equity_curve[equity_curve['datetime'] <= end_date].sort_values(by='equity_curve', ascending=False).iloc[0]['datetime']
     # 将无关的变量删除
     equity_curve.drop(['max2here', 'dd2here'], axis=1, inplace=True)
     results.loc[0, '最大回撤'] = format(max_draw_down, '.2%')
@@ -131,14 +134,41 @@ def strategy_evaluate(equity_curve, trade):
         [len(list(v)) for k, v in itertools.groupby(np.where(trade['change'] < 0, 1, np.nan))])  # 最大连续亏损笔数
 
     # ===每月收益率
-    equity_curve.set_index('candle_begin_time', inplace=True)
+    equity_curve.set_index('datetime', inplace=True)
     monthly_return = equity_curve[['equity_change']].resample(rule='M').apply(lambda x: (1 + x).prod() - 1)
 
     return results.T, monthly_return
 
 
-def QAStatistics_Start(df, param):
-    signal_df = signal_simple_bolling(df, param)
+def QAStatistics_Start(symbol, t, param):
+    start_t = datetime.datetime.now()
+
+    data = QA_fetch_cryptocurrency_min(
+        code=[
+            symbol
+        ],
+        start='2017-10-01',
+        end='2021-04-07',
+        frequence='1min'
+    )
+
+    period_df = data.resample(t, on='datetime', label='left', closed='left').agg(
+        {'open': 'first',
+         'high': 'max',
+         'low': 'min',
+         'close': 'last',
+         'volume': 'sum',
+         }
+    )
+    period_df.dropna(subset=['open'], inplace=True)  # 去除一天都没有交易的周期
+    period_df = period_df[period_df['volume'] > 0]  # 去除成交量为0的交易周期
+    period_df.reset_index(inplace=True)
+    df = period_df[['datetime', 'open', 'high', 'low', 'close', 'volume']]
+    df = df[df['datetime'] >= pd.to_datetime('2017-10-01')]
+    df.reset_index(inplace=True, drop=True)
+
+    _df = df.copy()
+    signal_df = signal_simple_bolling(_df, param)
     position_df = position_for_OKEx_future(signal_df)
     equity_curve = equity_curve_for_OKEx_USDT_future_next_open(position_df)
 
@@ -151,3 +181,5 @@ def QAStatistics_Start(df, param):
 
     print(r)
     print(monthly_return)
+
+    log(start_t, '完成')
