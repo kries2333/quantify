@@ -26,7 +26,7 @@ def log(start_t, text):
     print("{} 多线程计算共消耗: {:.2f}".format(text, elapsed_sec) + " 秒")
 
 
-def start_strategy_booling(symbol, t, teb):
+def start_strategy_booling_params(symbol, t, teb):
     start_t = datetime.datetime.now()
 
     num_cores = int(mp.cpu_count())
@@ -89,6 +89,8 @@ def start_strategy_booling(symbol, t, teb):
 
 
 if __name__ == "__main__":
-    for symbol in ['OKEX.BTC-USDT', 'OKEX.ETH-USDT', 'OKEX.EOS-USDT']:
-        for t in ['15T', '30T', '60T']:
-            start_strategy_booling(symbol, t, 'mod')
+    # for symbol in ['OKEX.BTC-USDT', 'OKEX.ETH-USDT', 'OKEX.EOS-USDT']:
+    #     for t in ['15T', '30T', '60T']:
+    #         start_strategy_booling(symbol, t, 'mod')
+
+    start_strategy_booling_params('OKEX.ETH-USDT', '15T', 'test')

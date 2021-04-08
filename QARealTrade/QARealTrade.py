@@ -17,9 +17,9 @@ import pandas as pd
 
 # =执行的时间间隔
 from QARealTrade.QAConfig import exchange_timeout
-from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data
+from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, calculate_signal
 
-time_interval = '60m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
+time_interval = '15m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
 
 OKEX_CONFIG = {
     'apiKey': '7a314674-2f50-4621-a023-4c5a77c7f971',
@@ -69,10 +69,6 @@ def real_klink_min(symbol_info):
     # 获取数据
     recent_candle_data = single_threading_get_data(exchange, symbol_info, symbol_config, time_interval, run_time,
                                                    candle_num)
-
-    # for symbol in symbol_config.keys():
-    #     print(recent_candle_data[symbol])
-
     # 将symbol_candle_data和最新获取的recent_candle_data数据合并
     for symbol in symbol_config.keys():
         df = recent_candle_data[symbol]
