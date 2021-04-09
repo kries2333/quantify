@@ -16,8 +16,8 @@ import ccxt
 import pandas as pd
 
 # =执行的时间间隔
-from QAConfig import exchange_timeout
-from QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, calculate_signal
+from QARealTrade.QAConfig import exchange_timeout
+from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, calculate_signal
 
 time_interval = '5m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
 

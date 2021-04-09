@@ -9,5 +9,6 @@ if __name__ == '__main__':
     #     for t in ['5T', '15T', '30T', '60T']:
     #         start_strategy_booling_params(symbol, t, 'mod')
 
-    QAStatistics_Start('OKEX.ETH-USDT', '60T', [80, 0.7, 0.9])
-    print("==================================================")
+    # QAStatistics_Start('OKEX.ETH-USDT', '60T', [80, 0.7, 0.9])
+    # print("==================================================")
+    real_trade_start()
