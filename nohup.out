@@ -1,0 +1,80 @@
+/usr/local/python3/lib/python3.8/site-packages/pandas/compat/__init__.py:97: UserWarning: Could not import the lzma module. Your installed Python is incomplete. Attempting to use lzma compression will result in a RuntimeError.
+  warnings.warn(msg)
+/root/work/quantify/QAUtil/QADate_Adv.py:2: FutureWarning: The pandas.np module is deprecated and will be removed from pandas in a future version. Import numpy directly instead
+  from pandas import np
+QUANTAXIS>> Starting DOWNLOAD PROGRESS of min Klines from OKEX... 
+QUANTAXIS>> DOWNLOAD PROGRESS 0.0% 
+QUANTAXIS>> UPDATE_SYMBOL "OKEX.BTC-USDT" Trying updating "1min" from 2021-04-08 23:09:01 to 2021-04-08 23:10:56
+QUANTAXIS>> Fetch "OKEX.BTC-USDT" slices "1min" kline：21-04-08 23:09 to 21-04-08 23:10
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-08 11:52 to 21-04-08 15:09 in total 198 klines
+QUANTAXIS>> Fetch "OKEX.BTC-USDT" slices "1min" kline：17-10-01 08:00 to 21-04-05 22:07
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-05 10:48 to 21-04-05 14:07 in total 200 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-05 07:29 to 21-04-05 10:47 in total 199 klines
+Traceback (most recent call last):
+  File "main.py", line 7, in <module>
+    QA_SU_save_okex()   # 保存现货数据
+  File "/root/work/quantify/save_okex.py", line 315, in QA_SU_save_okex
+    QA_SU_save_okex_min('60')
+  File "/root/work/quantify/save_okex.py", line 197, in QA_SU_save_okex_min
+    data = QA_fetch_okex_kline_min(
+  File "/root/work/quantify/QAFetch/QAOkEx.py", line 122, in QA_fetch_okex_kline_min
+    klines = QA_fetch_okex_kline_with_auto_retry(
+  File "/root/work/quantify/QAFetch/QAOkEx.py", line 186, in QA_fetch_okex_kline_with_auto_retry
+    time.sleep(0.5)
+KeyboardInterrupt
+/usr/local/python3/lib/python3.8/site-packages/pandas/compat/__init__.py:97: UserWarning: Could not import the lzma module. Your installed Python is incomplete. Attempting to use lzma compression will result in a RuntimeError.
+  warnings.warn(msg)
+/root/work/quantify/QAUtil/QADate_Adv.py:2: FutureWarning: The pandas.np module is deprecated and will be removed from pandas in a future version. Import numpy directly instead
+  from pandas import np
+QUANTAXIS>> Starting DOWNLOAD PROGRESS of min Klines from OKEX... 
+QUANTAXIS>> DOWNLOAD PROGRESS 0.0% 
+QUANTAXIS>> UPDATE_SYMBOL "OKEX.BTC-USDT" Trying updating "1min" from 2021-04-08 23:09:01 to 2021-04-08 23:11:02
+QUANTAXIS>> Fetch "OKEX.BTC-USDT" slices "1min" kline：21-04-08 23:09 to 21-04-08 23:11
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-08 11:53 to 21-04-08 15:10 in total 198 klines
+QUANTAXIS>> Fetch "OKEX.BTC-USDT" slices "1min" kline：17-10-01 08:00 to 21-04-05 15:29
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-05 04:10 to 21-04-05 07:29 in total 200 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-05 00:51 to 21-04-05 04:09 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-04 21:32 to 21-04-05 00:50 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-04 18:13 to 21-04-04 21:31 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-04 14:54 to 21-04-04 18:12 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-04 11:35 to 21-04-04 14:53 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-04 08:16 to 21-04-04 11:34 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-04 04:57 to 21-04-04 08:15 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-04 01:38 to 21-04-04 04:56 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-03 22:19 to 21-04-04 01:37 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-03 19:00 to 21-04-03 22:18 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-03 15:41 to 21-04-03 18:59 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-03 12:22 to 21-04-03 15:40 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-03 09:03 to 21-04-03 12:21 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-03 05:44 to 21-04-03 09:02 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-03 02:25 to 21-04-03 05:43 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-02 23:06 to 21-04-03 02:24 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-02 19:47 to 21-04-02 23:05 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-02 16:28 to 21-04-02 19:46 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-02 13:09 to 21-04-02 16:27 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-02 09:50 to 21-04-02 13:08 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-02 06:31 to 21-04-02 09:49 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-02 03:12 to 21-04-02 06:30 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 23:53 to 21-04-02 03:11 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 20:34 to 21-04-01 23:52 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 17:15 to 21-04-01 20:33 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 13:56 to 21-04-01 17:14 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 10:37 to 21-04-01 13:55 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 07:18 to 21-04-01 10:36 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 03:59 to 21-04-01 07:17 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-04-01 00:40 to 21-04-01 03:58 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-31 21:21 to 21-04-01 00:39 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-31 18:02 to 21-03-31 21:20 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-31 14:43 to 21-03-31 18:01 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-31 11:24 to 21-03-31 14:42 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-31 08:05 to 21-03-31 11:23 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-31 04:46 to 21-03-31 08:04 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-31 01:27 to 21-03-31 04:45 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-30 22:08 to 21-03-31 01:26 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-30 18:49 to 21-03-30 22:07 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-30 15:30 to 21-03-30 18:48 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-30 12:11 to 21-03-30 15:29 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-30 08:52 to 21-03-30 12:10 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-30 05:33 to 21-03-30 08:51 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-30 02:14 to 21-03-30 05:32 in total 199 klines
+QUANTAXIS>> SYMBOL "OKEX.BTC-USDT" Recived "1min" from 21-03-29 22:55 to 21-03-30 02:13 in total 199 klines
