@@ -16,10 +16,10 @@ import ccxt
 import pandas as pd
 
 # =执行的时间间隔
-from QARealTrade.QAConfig import exchange_timeout
-from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, calculate_signal
+from QAConfig import exchange_timeout
+from QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, calculate_signal
 
-time_interval = '15m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
+time_interval = '5m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
 
 OKEX_CONFIG = {
     'apiKey': '7a314674-2f50-4621-a023-4c5a77c7f971',
@@ -37,11 +37,7 @@ symbol_config = {
     'eth-usdt': {'instrument_id': 'ETH-USDT-210409',  # 合约代码，当更换合约的时候需要手工修改
                  'leverage': '3',  # 控制实际交易的杠杆倍数，在实际交易中可以自己修改。此处杠杆数，必须小于页面上的最大杠杆数限制
                  'strategy_name': 'real_signal_simple_bolling',  # 使用的策略的名称
-                 'para': [330, 0.5, 0.02]},  # 策略参数
-    'eos-usdt': {'instrument_id': 'EOS-USDT-210409',
-                 'leverage': '3',
-                 'strategy_name': 'real_signal_simple_bolling',  # 不同币种可以使用不同的策略
-                 'para': [690, 0.7, 0.03]},
+                 'para': [570, 0.5, 0.9]}  # 策略参数
 }
 
 max_len = 1000  # 设定最多收集多少根K线，okex不能超过1440根
@@ -86,6 +82,11 @@ def real_klink_min(symbol_info):
     print('\nsymbol_info:\n', symbol_info)
     print('本周期交易计划:', symbol_signal)
 
+
 def real_trade_start():
     symbol_info = account_positions()
     real_klink_min(symbol_info)
+
+
+if __name__ == '__main__':
+    real_trade_start()
