@@ -74,7 +74,7 @@ def start_strategy_booling_params(symbol, t, teb):
     for index in range(len(_dict)):
         out.loc[index] = [_dict[index][0], _dict[index][1]]
 
-    out_file = teb + "_" + symbol + "_" + t + "_bolling_"  + ".csv"
+    out_file = teb + "_" + symbol + "_" + t + "_bolling"  + ".csv"
     out.to_csv(out_file)
 
     log(start_t, '完成')

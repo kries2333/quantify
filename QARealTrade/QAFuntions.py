@@ -1,3 +1,4 @@
+import math
 
 import pandas as pd
 from datetime import datetime, timedelta
@@ -9,6 +10,7 @@ import hashlib
 import base64
 from urllib import parse
 
+from QARealTrade.QAConfig import *
 from QAStrategy import Signals
 
 # =====okex交互函数
