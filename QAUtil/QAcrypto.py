@@ -12,10 +12,7 @@ from QAUtil.QASetting import DATABASE
 def QA_util_find_missing_kline(
     symbol,
     freq,
-    start_epoch=datetime(2017,
-                         10,
-                         1,
-                         tzinfo=tzutc()),
+    start_epoch=datetime(2017, 10, 1, tzinfo=tzutc()),
     tzlocalize='Asia/Shanghai'
 ):
     """

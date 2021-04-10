@@ -12,12 +12,15 @@
 # 更新需要交易的合约、策略参数、下单量等配置信息
 
 # =交易所配置
+from time import sleep
+
 import ccxt
 import pandas as pd
 
 # =执行的时间间隔
-from QARealTrade.QAConfig import exchange_timeout
-from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, calculate_signal
+from QARealTrade.QAConfig import exchange_timeout, long_sleep_time
+from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, \
+    calculate_signal, send_dingding_msg
 
 time_interval = '5m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
 
@@ -84,9 +87,17 @@ def real_klink_min(symbol_info):
 
 
 def real_trade_start():
-    symbol_info = account_positions()
-    real_klink_min(symbol_info)
+    while True:
+        try:
+            symbol_info = account_positions()
+            real_klink_min(symbol_info)
+        except Exception as e:
+            send_dingding_msg('系统出错，10s之后重新运行，出错原因：' + str(e))
+            print(e)
+            sleep(long_sleep_time)
 
 
 if __name__ == '__main__':
     real_trade_start()
+
+
