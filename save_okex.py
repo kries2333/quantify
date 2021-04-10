@@ -34,7 +34,7 @@ from QAUtil.QAcrypto import (
 
 import pymongo
 
-OKEx_MIN_DATE = datetime.datetime(2017, 10, 1, tzinfo=tzutc())
+OKEx_MIN_DATE = datetime.datetime(2017, 1, 1, tzinfo=tzutc())
 OKEx_EXCHANGE = 'OKEX'
 OKEx_SYMBOL = 'OKEX.{}'
 
