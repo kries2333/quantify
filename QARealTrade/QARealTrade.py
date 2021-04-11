@@ -40,10 +40,10 @@ symbol_config = {
     'eth-usdt': {'instrument_id': 'ETH-USDT-210416',  # 合约代码，当更换合约的时候需要手工修改
                  'leverage': '3',  # 控制实际交易的杠杆倍数，在实际交易中可以自己修改。此处杠杆数，必须小于页面上的最大杠杆数限制
                  'strategy_name': 'real_signal_simple_bolling',  # 使用的策略的名称
-                 'para': [570, 0.5, 0.9]}  # 策略参数
+                 'para': [260, 0.9, 0.8]}  # 策略参数
 }
 
-max_len = 1000  # 设定最多收集多少根K线，okex不能超过1440根
+max_len = 100  # 设定最多收集多少根K线，okex不能超过1440根
 symbol_candle_data = dict()  # 用于存储K线数据
 
 # 账号持仓
@@ -82,7 +82,7 @@ def real_klink_min(symbol_info):
 
     # =计算每个币种的交易信号
     symbol_signal = calculate_signal(symbol_info, symbol_config, symbol_candle_data)
-    print('\nsymbol_info:\n', symbol_info)
+    # print('\nsymbol_info:\n', symbol_info)
     print('本周期交易计划:', symbol_signal)
 
 
