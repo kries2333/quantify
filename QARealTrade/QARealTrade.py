@@ -22,7 +22,7 @@ from QARealTrade.QAConfig import exchange_timeout, long_sleep_time, short_sleep_
 from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, \
     calculate_signal, send_dingding_msg, single_threading_place_order, update_order_info, dingding_report_every_loop
 
-time_interval = '60m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
+time_interval = '1h'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
 
 OKEX_CONFIG = {
     'apiKey': '7a314674-2f50-4621-a023-4c5a77c7f971',
