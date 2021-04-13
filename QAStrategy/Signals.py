@@ -56,6 +56,9 @@ import numpy as np
 #     return signal
 
 # 优化的不吝回测策略
+from QAUtil.Profile import profile
+
+
 def real_signal_simple_bolling(df, now_pos, avg_price, param=[400, 2, 0.5]):
     """
      实盘产生布林线策略信号的函数，和历史回测函数相比，计算速度更快。
@@ -142,7 +145,7 @@ def signal_simple_bolling(df, params=[400, 2, 0.5]):
     # 找出做多信号
     condition1 = df['close'] > df['upper']  # 当前K线的收盘价 > 上轨
     condition2 = df['close'].shift(1) <= df['upper'].shift(1)  # 之前K线的收盘价 <= 上轨
-    condition3 = df['open'] < df['median'] + ((df['open'] - df['median']) * x)
+    condition3 = df['close'] < df['median'] + ((df['close'] - df['median']) * x)
     df.loc[condition1 & condition2 & condition3, 'signal_long'] = 1  # 将产生做多信号的那根K线的signal设置为1，1代表做多
 
     # 找出做多平仓信号
@@ -153,7 +156,7 @@ def signal_simple_bolling(df, params=[400, 2, 0.5]):
     # 找出做空信号
     condition1 = df['close'] < df['lower']  # 当前K线的收盘价 < 下轨
     condition2 = df['close'].shift(1) >= df['lower'].shift(1)  # 之前K线的收盘价 >= 下轨
-    condition3 = df['open'] > df['median'] + ((df['median'] - df['open']) * x)
+    condition3 = df['close'] > df['median'] - ((df['median'] - df['close']) * x)
     df.loc[condition1 & condition2 & condition3, 'signal_short'] = -1  # 将产生做空信号的那根K线的signal设置为-1，-1代表做空
 
     # 找出做空平仓信号
@@ -173,13 +176,17 @@ def signal_simple_bolling(df, params=[400, 2, 0.5]):
     return df
 
 # 策略参数组合
-def signal_simple_bolling_para_list(m_list=range(10, 1000, 10), n_list=[i / 10 for i in list(np.arange(5, 50, 1))], x_list=[i / 10 for i in list(np.arange(1, 10, 1))]):
+def signal_simple_bolling_para_list():
     """
     产生布林 策略的参数范围
     :param m_list:
     :param n_list:
     :return:
     """
+
+    m_list = range(10, 1000, 10)
+    n_list = [i / 10 for i in list(np.arange(5, 50, 1))]
+    x_list = [i / 10 for i in list(np.arange(1, 10, 1))]
 
     para_list = []
 

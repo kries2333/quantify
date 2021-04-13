@@ -1,40 +1,50 @@
-import datetime
+import math
+from datetime import datetime
 import multiprocessing as mp
 import pandas as pd
-
 from Common.Common import log
 from QAFetch.QAQuery import QA_fetch_cryptocurrency_min
 from QAStrategy.Evaluate import equity_curve_for_OKEx_USDT_future_next_open
 from QAStrategy.Position import position_for_OKEx_future
 from QAStrategy.Signals import signal_simple_bolling, signal_simple_bolling_para_list
+from QAUtil.Profile import profile
 
-
-def train_on_parameter(df, param, result_dict, result_lock):
-    signal_df = signal_simple_bolling(df, param)
-    position_df = position_for_OKEx_future(signal_df)
-    _df = equity_curve_for_OKEx_USDT_future_next_open(position_df)
-    r = _df.iloc[-1]['equity_curve']
-    result_dict[str(param)] = r
-    return
-
+face_value = 0.01  # btc是0.01，不同的币种要进行不同的替换
+c_rate = 5 / 10000  # 手续费，commission fees，默认为万分之5。不同市场手续费的收取方法不同，对结果有影响。比如和股票就不一样。
+slippage = 1 / 1000  # 滑点 ，可以用百分比，也可以用固定值。建议币圈用百分比，股票用固定值
+leverage_rate = 3
+min_margin_ratio = 1 / 100  # 最低保证金率，低于就会爆仓
+rule_type = '15T'
+drop_days = 10  # 币种刚刚上线10天内不交易
+df = pd.DataFrame
 
 def start_strategy_booling_params(symbol, t, teb):
-    start_t = datetime.datetime.now()
+    print("")
 
-    num_cores = int(mp.cpu_count())
-    print("本地计算机有: " + str(num_cores) + " 核心")
-    pool = mp.Pool(num_cores)
+
+def train_on_parameter(param):
+    _df = df.copy()
+
+    signal_df = signal_simple_bolling(_df, param)
+    position_df = position_for_OKEx_future(signal_df)
+    equity_curve_df = equity_curve_for_OKEx_USDT_future_next_open(position_df)
+    # r = equity_curve_df.iloc[-1]['equity_curve']
+
+if __name__ == "__main__":
+
+    # start_strategy_booling_params('OKEX.ETH-USDT', '5T', 'mod')
+    start_t = datetime.now()
 
     data = QA_fetch_cryptocurrency_min(
         code=[
-            symbol
+            'OKEX.ETH-USDT'
         ],
         start='2017-10-01',
         end='2021-04-07',
         frequence='1min'
     )
 
-    period_df = data.resample(t, on='datetime', label='left', closed='left').agg(
+    period_df = data.resample('5T', on='datetime', label='left', closed='left').agg(
         {'open': 'first',
          'high': 'max',
          'low': 'min',
@@ -42,6 +52,7 @@ def start_strategy_booling_params(symbol, t, teb):
          'volume': 'sum',
          }
     )
+
     period_df.dropna(subset=['open'], inplace=True)  # 去除一天都没有交易的周期
     period_df = period_df[period_df['volume'] > 0]  # 去除成交量为0的交易周期
     period_df.reset_index(inplace=True)
@@ -51,37 +62,15 @@ def start_strategy_booling_params(symbol, t, teb):
 
     log(start_t, '数据库获取数据')
 
-    manager = mp.Manager()
-    managed_locker = manager.Lock()
-    managed_dict = manager.dict()
-
     params = signal_simple_bolling_para_list()
 
-    _df = df.copy()
-    results = [pool.apply_async(train_on_parameter, args=(_df, param, managed_dict, managed_locker)) for param in params]
-    results = [p.get() for p in results]
+    num_cores = int(mp.cpu_count())
+    print("本地计算机有: " + str(num_cores) + " 核心")
+    pool = mp.Pool(num_cores)
 
-    log(start_t, '计算参数')
+    pool.map(train_on_parameter, params)
 
-    _dict = sorted(managed_dict.items(), key=lambda d: d[1])
-    out = pd.DataFrame(columns={
-        'param',
-        'equity_curve'
-    })
-
-    log(start_t, '参考值排序')
-
-    for index in range(len(_dict)):
-        out.loc[index] = [_dict[index][0], _dict[index][1]]
-
-    out_file = teb + "_" + symbol + "_" + t + "_bolling"  + ".csv"
-    out.to_csv(out_file)
+    pool.close()
+    pool.join()
 
     log(start_t, '完成')
-
-if __name__ == "__main__":
-    for symbol in ['OKEX.BTC-USDT', 'OKEX.ETH-USDT', 'OKEX.EOS-USDT']:
-        for t in ['5T', '15T', '30T', '60T']:
-            start_strategy_booling_params(symbol, t, 'mod')
-
-    # start_strategy_booling_params('OKEX.ETH-USDT', '15T', 'test')

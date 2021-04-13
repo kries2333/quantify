@@ -1,4 +1,5 @@
 from QACmd import QA_cmd
+from QAStrategy.QAStarategy import QAStarategy
 
 if __name__ == '__main__':
     # # QA_SU_save_okex()   # 保存现货数据
@@ -11,4 +12,7 @@ if __name__ == '__main__':
     # # real_trade_start()
     #
     # print(run())
-    QA_cmd()
+    # QA_cmd()
+
+    # QAStarategy.start_strategy_booling_params('OKEX.ETH-USDT', '1T', 'test')
+    print("")

@@ -4,6 +4,7 @@ import subprocess
 from QARealTrade.QARealTrade import real_trade_start
 from QASU.save_binance import QA_SU_save_binance_1min
 from QASU.save_okex import QA_SU_save_okex_1min, QA_SU_save_okex
+from QAStrategy.QAStarategy import QAStarategy
 from QAUtil.QALogs import QA_util_log_info
 
 __version__ = '1.0410.001'
@@ -20,6 +21,12 @@ class CLI(cmd.Cmd):
 
     def do_version(self, arg):
         QA_util_log_info(__version__)
+
+
+    def do_str(self, arg):
+        print("arg=", arg)
+        for t in ['5T', '15T', '30T', '60T']:
+            QAStarategy.start_strategy_booling_params('OKEX.ETH-USDT', t, 'mod')
 
     def do_run(self, arg):
         print("arg=", arg)
