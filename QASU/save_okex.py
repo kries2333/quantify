@@ -83,9 +83,7 @@ def QA_SU_save_okex_min(
                 ]
             )
 
-    # symbol_list['symbol'] = ['BTC-USDT', 'ETH-USDT', 'EOS-USDT']
-
-    symbol_list['symbol'] = ['BTC-USDT']
+    symbol_list['symbol'] = ['BTC-USDT', 'ETH-USDT', 'EOS-USDT']
 
     end = datetime.datetime.now(tzutc())
     QA_util_log_info(

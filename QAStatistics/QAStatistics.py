@@ -28,7 +28,7 @@ def transfer_equity_curve_to_trade(equity_curve):
 
     # =计算每笔交易的start_time
     if 'start_time' not in equity_curve.columns:
-        equity_curve.loc[open_pos_condition, 'start_time'] = equity_curve['date_time']
+        equity_curve.loc[open_pos_condition, 'start_time'] = equity_curve['datetime']
         equity_curve['start_time'].fillna(method='ffill', inplace=True)
         equity_curve.loc[equity_curve['pos'] == 0, 'start_time'] = pd.NaT
 
@@ -184,7 +184,7 @@ def QAStatistics_Start(symbol, t, param):
 
     print(r)
     print(monthly_return)
-    show(equity_curve, '2017-10-1', '2021-04-07', symbol)
+    # show(equity_curve, '2017-10-1', '2021-04-07', symbol)
     log(start_t, '完成')
     return  equity_curve
 

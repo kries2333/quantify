@@ -4,7 +4,8 @@ import subprocess
 from QARealTrade.QARealTrade import real_trade_start
 from QASU.save_binance import QA_SU_save_binance_1min
 from QASU.save_okex import QA_SU_save_okex_1min, QA_SU_save_okex
-from QAStrategy.QAStarategy import QAStarategy
+from QAStatistics.QAStatistics import QAStatistics_Start
+from QAStrategy.QAStarategy import start_strategy_booling_params
 from QAUtil.QALogs import QA_util_log_info
 
 __version__ = '1.0410.001'
@@ -23,19 +24,23 @@ class CLI(cmd.Cmd):
         QA_util_log_info(__version__)
 
 
-    def do_str(self, arg):
+    def do_stu(self, arg):
         print("arg=", arg)
         for t in ['5T', '15T', '30T', '60T']:
-            QAStarategy.start_strategy_booling_params('OKEX.ETH-USDT', t, 'mod')
+            start_strategy_booling_params('OKEX.ETH-USDT', t, 'mod')
+
+    def do_stati(self, arg):
+        QAStatistics_Start('OKEX.ETH-USDT', '60T', [850, 1.5])
 
     def do_run(self, arg):
-        print("arg=", arg)
-        if arg == "":
-            print("没有参数")
-        else:
-            arg = arg.split(" ")
-            if len(arg) == 1 and arg[0] == "realtrade":
-                real_trade_start()
+        # print("arg=", arg)
+        # if arg == "":
+        #     print("没有参数")
+        # else:
+        #     arg = arg.split(" ")
+        #     if len(arg) == 1 and arg[0] == "realtrade":
+        #         real_trade_start()
+        real_trade_start()
 
     def do_save(self, arg):
         print("arg=", arg)
