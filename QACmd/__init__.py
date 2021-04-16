@@ -30,16 +30,9 @@ class CLI(cmd.Cmd):
             start_strategy_booling_params('OKEX.ETH-USDT', t, 'mod')
 
     def do_stati(self, arg):
-        QAStatistics_Start('OKEX.ETH-USDT', '60T', [850, 1.5])
+        QAStatistics_Start('BINANCE.ETHUSDT', '15T', [440, 3.3])
 
     def do_run(self, arg):
-        # print("arg=", arg)
-        # if arg == "":
-        #     print("没有参数")
-        # else:
-        #     arg = arg.split(" ")
-        #     if len(arg) == 1 and arg[0] == "realtrade":
-        #         real_trade_start()
         real_trade_start()
 
     def do_save(self, arg):

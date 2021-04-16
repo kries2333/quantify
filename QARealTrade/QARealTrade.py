@@ -22,7 +22,7 @@ from QARealTrade.QAConfig import exchange_timeout, long_sleep_time, short_sleep_
 from QARealTrade.QAFuntions import update_symbol_info, sleep_until_run_time, single_threading_get_data, \
     calculate_signal, send_dingding_msg, single_threading_place_order, update_order_info, dingding_report_every_loop
 
-time_interval = '1h'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
+time_interval = '5m'  # 目前支持5m，15m，30m，1h，2h等。得okex支持的K线才行。最好不要低于5m
 
 OKEX_CONFIG = {
     'apiKey': '7a314674-2f50-4621-a023-4c5a77c7f971',
@@ -40,7 +40,7 @@ symbol_config = {
     'eth-usdt': {'instrument_id': 'ETH-USDT-210416',  # 合约代码，当更换合约的时候需要手工修改
                  'leverage': '3',  # 控制实际交易的杠杆倍数，在实际交易中可以自己修改。此处杠杆数，必须小于页面上的最大杠杆数限制
                  'strategy_name': 'real_signal_simple_bolling',  # 使用的策略的名称
-                 'para': [850, 1.5]}  # 策略参数
+                 'para': [590, 3.4]}  # 策略参数
 }
 
 max_len = 1000  # 设定最多收集多少根K线，okex不能超过1440根
@@ -60,7 +60,7 @@ def account_positions():
 
 def real_klink_min(symbol_info):
     # =并行获取所有币种最近数据
-    exchange.timeout = 1000  # 即将获取最新数据，临时将timeout设置为1s，加快获取数据速度
+    exchange.timeout = 5000  # 即将获取最新数据，临时将timeout设置为1s，加快获取数据速度
     candle_num = 1000  # 只获取最近candle_num根K线数据，可以获得更快的速度
 
     # =获取策略执行时间，并sleep至该时间

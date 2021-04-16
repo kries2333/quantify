@@ -160,7 +160,7 @@ def QA_fetch_binance_kline_with_auto_retry(
     start_time *= 1000
     end_time *= 1000
     while start_time < end_time:
-        url = urljoin(Binance_base_url, "/api/v1/klines")
+        url = urljoin(Binance_base_url, "/api/v3/klines")
         try:
             req = requests.get(
                 url,
@@ -179,7 +179,7 @@ def QA_fetch_binance_kline_with_auto_retry(
             retries = retries + 1
             if (retries % 6 == 0):
                 print(ILOVECHINA)
-            print("Retry /api/v1/klines #{}".format(retries))
+            print("Retry /api/v3/klines #{}".format(retries))
             time.sleep(0.5)
 
         if (retries == 0):
@@ -339,22 +339,22 @@ if __name__ == '__main__':
     from dateutil.tz import *
 
     tz = pytz.timezone("Asia/Shanghai")
-    url = urljoin(Binance_base_url, "/api/v1/klines")
+    url = urljoin(Binance_base_url, "/api/v3/klines")
     start = time.mktime(
         datetime.datetime(2018,
                           6,
-                          13,
+                          1,
                           tzinfo=tzutc()).timetuple()
     )
     end = time.mktime(
         datetime.datetime(2018,
-                          6,
-                          14,
+                          10,
+                          1,
                           tzinfo=tzutc()).timetuple()
     )
     print(start * 1000)
     print(end * 1000)
-    data = QA_fetch_binance_kline("ETHBTC", start, end, '1d')
+    data = QA_fetch_binance_kline("ETHUSDT", start, end, '1m')
     print(len(data))
     print(data[0])
     print(data[-1])

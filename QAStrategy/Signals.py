@@ -113,7 +113,7 @@ def signal_simple_bolling(df, param=[400, 2, 0.5]):
     df['signal'] = temp['signal']
 
     # ===删除无关变量
-    df.drop(['median', 'std', 'upper', 'lower', 'signal_long', 'signal_short'], axis=1, inplace=True)
+    df.drop(['signal_long', 'signal_short'], axis=1, inplace=True)
 
     return df
 

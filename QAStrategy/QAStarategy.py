@@ -22,7 +22,7 @@ def start_strategy_booling_params(symbol, t, teb):
     pass
 
 
-def train_on_parameter(param=[400, 2, 0.5]):
+def train_on_parameter(param):
     _df = df.copy()
 
     signal_df = signal_simple_bolling(_df, param)
@@ -40,18 +40,20 @@ if __name__ == "__main__":
     # for s in ['OKEX.ETH-USDT']:
     #     for t in ['5T', '15T', '30T', '60']:
     #         start_strategy_booling_params(s, t, 'normal')
+    symbol = 'BINANCE.ETHUSDT'
+
     start_t = datetime.now()
 
     data = QA_fetch_cryptocurrency_min(
         code=[
-            'OKEX.ETH-USDT'
+            symbol
         ],
-        start='2017-10-01',
+        start='2017-08-01',
         end='2021-04-07',
         frequence='1min'
     )
 
-    for t in ['60T']:
+    for t in ['5T', '15T', '30T', '60T']:
         period_df = data.resample(t, on='datetime', label='left', closed='left').agg(
             {'open': 'first',
              'high': 'max',
@@ -84,5 +86,5 @@ if __name__ == "__main__":
         print(para_curve_df)
         log(start_t, '完成')
 
-        path = 'normal' + "_OKEX.ETH-USDT-" + t + '.csv'
+        path = 'normal-' + symbol + "-" + t + '.csv'
         para_curve_df.to_csv(path)

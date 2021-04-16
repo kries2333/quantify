@@ -76,7 +76,8 @@ def QA_SU_save_binance_min(
                 ]
             )
 
-    symbol_list['symbol'] = ['BTCUSDT', 'ETHUSDT', 'EOSUSDT']
+    # symbol_list['symbol'] = ['BTCUSDT', 'ETHUSDT', 'EOSUSDT', 'DOTUSDT', 'DOGEUSDT']
+    symbol_list['symbol'] = ['ETHUSDT']
 
     end = datetime.datetime.now(tzutc())
 
@@ -314,3 +315,6 @@ def QA_SU_save_data_binance_callback(data, freq):
         # 新 tick，插入记录
         data = QA_util_to_json_from_pandas(data)
         col.insert_many(data)
+
+if __name__ == "__main__":
+    QA_SU_save_binance_1min()

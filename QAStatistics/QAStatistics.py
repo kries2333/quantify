@@ -150,8 +150,8 @@ def QAStatistics_Start(symbol, t, param):
         code=[
             symbol
         ],
-        start='2017-10-01',
-        end='2021-04-07',
+        start='2017-08-01',
+        end='2020-08-31',
         frequence='1min'
     )
 

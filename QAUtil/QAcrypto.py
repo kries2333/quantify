@@ -1,19 +1,21 @@
+from QAUtil.QADate_Adv import QA_util_datetime_to_Unix_timestamp, QA_util_print_timestamp
+from QAUtil.QAParameter import (FREQUENCE)
 import pandas as pd
 from datetime import datetime
 import time
 from dateutil.tz import tzutc
 import pymongo
 
-from QAUtil.QADate_Adv import QA_util_datetime_to_Unix_timestamp, QA_util_print_timestamp
-from QAUtil.QAParameter import FREQUENCE
 from QAUtil.QASetting import DATABASE
 
-
 def QA_util_find_missing_kline(
-    symbol,
-    freq,
-    start_epoch=datetime(2017, 10, 1, tzinfo=tzutc()),
-    tzlocalize='Asia/Shanghai'
+        symbol,
+        freq,
+        start_epoch=datetime(2017,
+                             10,
+                             1,
+                             tzinfo=tzutc()),
+        tzlocalize='Asia/Shanghai'
 ):
     """
     查找24小时不间断的连续交易市场中缺失的 kline 历史数据，生成缺失历史数据时间段
@@ -131,11 +133,11 @@ def QA_util_find_missing_kline(
             freq=freq
         ).difference(_data.index).tz_localize(tzlocalize)
         if (int(_data.iloc[0].time_stamp) >
-            (QA_util_datetime_to_Unix_timestamp() + 120)):
+                (QA_util_datetime_to_Unix_timestamp() + 120)):
             # 出现“未来”时间，一般是默认时区设置错误造成的
             raise Exception(
                 'A unexpected \'Future\' timestamp got, Please check self.missing_data_list_func param \'tzlocalize\' set. More info: {:s}@{:s} at {:s} but current time is {}'
-                .format(
+                    .format(
                     symbol,
                     freq,
                     QA_util_print_timestamp(_data.iloc[0].time_stamp),
@@ -161,7 +163,7 @@ def QA_util_find_missing_kline(
                     int(time.mktime(start_epoch.utctimetuple())),
                     int(_data.iloc[0].time_stamp),
                     '{} to {}'.format(start_epoch,
-                                     _data.iloc[0].date)
+                                      _data.iloc[0].date)
                 ]
             ],
             columns=['expected',
@@ -174,8 +176,9 @@ def QA_util_find_missing_kline(
         if (expected is None):
             expected = int(leak_datetime[x].timestamp())
 
-        if ((expected is not None) and (x > 1) and (int(leak_datetime[x].timestamp()) != int(leak_datetime[x - 1].timestamp() + FREQUENCE_PERIOD_TIME[freq]))) or \
-            ((expected is not None) and (x > 1) and (x == len(leak_datetime) - 1)):
+        if ((expected is not None) and (x > 1) and (int(leak_datetime[x].timestamp()) != int(
+                leak_datetime[x - 1].timestamp() + FREQUENCE_PERIOD_TIME[freq]))) or \
+                ((expected is not None) and (x > 1) and (x == len(leak_datetime) - 1)):
             between = int(
                 leak_datetime[x - 1].timestamp() + FREQUENCE_PERIOD_TIME[freq]
             )
@@ -189,10 +192,10 @@ def QA_util_find_missing_kline(
                         '{} to {}'.format(
                             pd.to_datetime(expected,
                                            unit='s'
-                                          ).tz_localize('Asia/Shanghai'),
+                                           ).tz_localize('Asia/Shanghai'),
                             pd.to_datetime(between,
                                            unit='s'
-                                          ).tz_localize('Asia/Shanghai')
+                                           ).tz_localize('Asia/Shanghai')
                         )
                 },
                 ignore_index=True
@@ -218,6 +221,10 @@ def QA_util_find_missing_kline(
     miss_kline.sort_values(by='expected', ascending=True, inplace=True)
     if (len(miss_kline) > 0):
         if (miss_kline.iloc[0].expected > QA_util_datetime_to_Unix_timestamp()) and \
-            (miss_kline.iloc[0].between > QA_util_datetime_to_Unix_timestamp()):
+                (miss_kline.iloc[0].between > QA_util_datetime_to_Unix_timestamp()):
             miss_kline.drop(miss_kline.iloc[0], inplace=True)
     return miss_kline.values
+
+
+if __name__ == '__main__':
+    print(QA_util_find_missing_kline('btcusdt', FREQUENCE.ONE_MIN))
